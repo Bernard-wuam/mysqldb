@@ -1,5 +1,3 @@
-
-
 add_library(MysqlDB INTERFACE)
 add_library(MysqlDB::MysqlDB ALIAS MysqlDB)
 
@@ -32,7 +30,7 @@ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/mysqldbConfig.cmake.in
     INSTALL_DESTINATION share/cmake/mysqldb)
 
 write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/MysqlDBConfigVersion.cmake
-    VERSION 0.0.1
+    VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion)
 
 install(
@@ -41,5 +39,3 @@ install(
     ${CMAKE_CURRENT_BINARY_DIR}/MysqlDBConfigVersion.cmake
     DESTINATION share/cmake/mysqldb
 )
-add_executable(mysqldb main.cpp)
-target_link_libraries(mysqldb PRIVATE MysqlDB::MysqlDB)
