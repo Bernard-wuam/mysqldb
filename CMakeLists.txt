@@ -9,6 +9,10 @@ target_sources(
     FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/mysqldb/mysqldb.h
 )
 
+find_package(boost_mysql CONFIG REQUIRED)
+find_package(boost_charconv CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
+
 target_link_libraries(MysqlDB INTERFACE Boost::mysql OpenSSL::SSL
     OpenSSL::Crypto Boost::charconv)
 install(

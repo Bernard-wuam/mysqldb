@@ -3,7 +3,6 @@
 
 find_dependency(boost_mysql CONFIG REQUIRED)
 find_dependency(boost_charconv CONFIG REQUIRED)
-find_dependency(boost_json CONFIG REQUIRED)
 find_dependency(OpenSSL REQUIRED)
 
  set_and_check(MysqlDB_INCLUDE_DIR "${PACKAGE_PREFIX_DIR}/include/mysqldb")
