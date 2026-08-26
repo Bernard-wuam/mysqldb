@@ -1,9 +1,4 @@
-cmake_minimum_required(VERSION 3.10.0)
-project(mysqldb VERSION 0.1.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(MysqlDB INTERFACE)
 add_library(MysqlDB::MysqlDB ALIAS MysqlDB)
@@ -16,6 +11,8 @@ target_sources(
     FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/mysqldb/mysqldb.h
 )
 
+target_link_libraries(MysqlDB INTERFACE Boost::mysql OpenSSL::SSL
+    OpenSSL::Crypto Boost::charconv)
 install(
     TARGETS MysqlDB
     EXPORT MysqlDBTargets
@@ -35,7 +32,7 @@ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/mysqldbConfig.cmake.in
     INSTALL_DESTINATION share/cmake/mysqldb)
 
 write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/MysqlDBConfigVersion.cmake
-    VERSION ${PROJECT_VERSION}
+    VERSION 0.0.1
     COMPATIBILITY SameMajorVersion)
 
 install(
@@ -44,3 +41,5 @@ install(
     ${CMAKE_CURRENT_BINARY_DIR}/MysqlDBConfigVersion.cmake
     DESTINATION share/cmake/mysqldb
 )
+add_executable(mysqldb main.cpp)
+target_link_libraries(mysqldb PRIVATE MysqlDB::MysqlDB)

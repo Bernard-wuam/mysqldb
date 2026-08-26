@@ -17,6 +17,8 @@
 #include <boost/mysql/results.hpp>
 #include <boost/mysql/static_results.hpp>
 #include <boost/mysql/with_params.hpp>
+#include <exception>
+#include <iostream>
 #include <memory>
 #include <stdexcept>
 
