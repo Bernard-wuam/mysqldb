@@ -7,6 +7,7 @@
 #include <boost/asio/detached.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/redirect_error.hpp>
+#include <boost/asio/thread_pool.hpp>
 #include <boost/json.hpp>
 #include <boost/mysql.hpp>
 #include <boost/mysql/connect_params.hpp>
@@ -38,14 +39,14 @@ private:
   }
 
 public:
-  static std::unique_ptr<boost::mysql::connection_pool> &getConnectionPool() {
+  static boost::mysql::connection_pool &getConnectionPool() {
     MysqlDB &instance = MysqlDB::getInstance();
     if (!instance.m_connPool)
       throw(std::logic_error("not initialized"));
-    return instance.m_connPool;
+    return *instance.m_connPool;
   }
 
-  static void init(boost::asio::io_context &ioc, const std::string hostname,
+  static void init(boost::asio::thread_pool &pool, const std::string hostname,
                    unsigned short port, const std::string &password,
                    const std::string &username, const std::string &database,
                    bool threadsafe = true, bool multiqueries = true) {
@@ -53,8 +54,6 @@ public:
     if (MysqlDB::getInstance().isInitialized) {
       throw(std::logic_error("not initialized"));
     }
-
-    instance.isInitialized = true;
 
     boost::mysql::pool_params poolParams;
     poolParams.server_address.emplace_host_and_port(hostname, port);
@@ -64,6 +63,8 @@ public:
     poolParams.thread_safe = threadsafe;
     poolParams.multi_queries = multiqueries;
     instance.m_connPool = std::make_unique<boost::mysql::connection_pool>(
-        ioc, std::move(poolParams));
+        pool, std::move(poolParams));
+
+    instance.isInitialized = true;
   }
 };
